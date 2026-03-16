@@ -77,7 +77,7 @@ html{font-family:var(--font);font-size:14px;color:var(--text);background:var(--b
 .dashboard{padding:20px 24px;max-width:1400px;margin:0 auto;}
 
 /* ── KPI Row ── */
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:20px;}
 .kpi{
   background:var(--surface);border-radius:var(--radius);padding:18px 20px;
   position:relative;overflow:hidden;
@@ -258,8 +258,21 @@ html{font-family:var(--font);font-size:14px;color:var(--text);background:var(--b
 .gradient-bar{flex:1;height:6px;border-radius:3px;background:linear-gradient(to right,#EF4444,#EF9F27,#22C55E);}
 
 /* ── Responsive ── */
+/* ── Revenue-specific ── */
+.rev-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.rev-stat{background:var(--surface-alt);border-radius:var(--radius-sm);padding:14px;text-align:center;border:1px solid var(--border-light);}
+.rev-stat-num{font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.02em;}
+.rev-stat-label{font-size:10px;color:var(--text-muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.04em;font-weight:500;}
+.growth-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-light);font-size:13px;}
+.growth-row:last-child{border-bottom:none;}
+.growth-name{font-weight:500;color:var(--text);}
+.growth-badge{font-size:11px;padding:3px 9px;border-radius:5px;font-weight:700;}
+.growth-badge.pos{background:var(--green-bg);color:var(--green-dark);}
+.growth-badge.neg{background:var(--red-bg);color:var(--red-dark);}
+.growth-badge.neut{background:var(--accent-light);color:var(--accent-dark);}
+
 @media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:580px){.kpi-row{grid-template-columns:1fr;}.row2{grid-template-columns:1fr;}.tab-bar{flex-wrap:wrap;}}
+@media(max-width:580px){.kpi-row{grid-template-columns:1fr;}.row2{grid-template-columns:1fr;}.tab-bar{flex-wrap:wrap;}.rev-stats{grid-template-columns:1fr;}}
 </style>
 
 <!-- ═══════════════ TOP NAVIGATION BAR ═══════════════ -->
@@ -368,6 +381,22 @@ html{font-family:var(--font);font-size:14px;color:var(--text);background:var(--b
       <div class="kpi-bottom">
         <span class="kpi-change flat">— Stable</span>
         <span class="kpi-period">last 7 days</span>
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-top">
+        <div class="kpi-label">Projected Revenue</div>
+        <div class="kpi-icon" style="background:var(--green-bg);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+        </div>
+      </div>
+      <div class="kpi-value">$38.4K</div>
+      <div class="kpi-bottom">
+        <span class="kpi-change up">
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1L9 6H1z" fill="currentColor"/></svg>
+          18%
+        </span>
+        <span class="kpi-period">vs last month</span>
       </div>
     </div>
   </div>
@@ -555,6 +584,79 @@ html{font-family:var(--font);font-size:14px;color:var(--text);background:var(--b
 
   <!-- ═══════ TAB: Business Intelligence ═══════ -->
   <div id="tab-business" class="tc">
+
+    <!-- ── Revenue Forecast (full-width) ── -->
+    <div class="row2" style="grid-template-columns:1fr;">
+      <div class="card">
+        <div class="card-header">
+          <div><div class="ct">Revenue Forecast — 6 Month Trend + AI Prediction</div><div class="cs">Actual monthly revenue with AI-projected revenue and confidence band for Q2 2026</div></div>
+          <span class="card-badge" style="background:var(--purple-bg);color:#7C3AED;">AI Forecast</span>
+        </div>
+        <div style="position:relative;width:100%;height:270px;"><canvas id="revForecastChart"></canvas></div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#3B82F6;"></div>Actual Revenue</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#8B5CF6;border:1.5px dashed #7C3AED;"></div>AI Forecast</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);"></div>Confidence Range</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Revenue by Client + Revenue Insights ── -->
+    <div class="row2">
+      <div class="card">
+        <div class="card-header">
+          <div><div class="ct">Revenue by Client — Trend & Forecast</div><div class="cs">Monthly revenue contribution per client (past 3 months + 3 month forecast)</div></div>
+        </div>
+        <div style="position:relative;width:100%;height:270px;"><canvas id="revByClientChart"></canvas></div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#22C55E;"></div>Music Merch — Artist X</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#3B82F6;"></div>Drinks Co — Premium</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#F59E0B;"></div>Music Merch — General</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#EF4444;"></div>Drinks Co — Mixed</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div><div class="ct">Revenue Insights & Projections</div><div class="cs">AI-driven revenue analytics and growth predictions</div></div>
+        </div>
+        <div class="rev-stats">
+          <div class="rev-stat">
+            <div class="rev-stat-num" style="color:#3B82F6;">$38.4K</div>
+            <div class="rev-stat-label">March Revenue</div>
+          </div>
+          <div class="rev-stat">
+            <div class="rev-stat-num" style="color:#8B5CF6;">$138.3K</div>
+            <div class="rev-stat-label">Predicted Q2</div>
+          </div>
+          <div class="rev-stat">
+            <div class="rev-stat-num" style="color:#22C55E;">$8.15</div>
+            <div class="rev-stat-label">Rev / Order ↑</div>
+          </div>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px;">Client Growth Predictions (Next Quarter)</div>
+        <div>
+          <div class="growth-row">
+            <span class="growth-name">Music Merch — Artist X</span>
+            <span class="growth-badge pos">+34%</span>
+          </div>
+          <div class="growth-row">
+            <span class="growth-name">Drinks Co — Premium</span>
+            <span class="growth-badge pos">+12%</span>
+          </div>
+          <div class="growth-row">
+            <span class="growth-name">Music Merch — General</span>
+            <span class="growth-badge neut">+5%</span>
+          </div>
+          <div class="growth-row">
+            <span class="growth-name">Drinks Co — Mixed Cases</span>
+            <span class="growth-badge neg">-8%</span>
+          </div>
+        </div>
+        <div class="ai-box"><div class="ai-label">AI Revenue Insight</div><p>Artist X launch is projected to drive 44% of Q2 revenue. Consider allocating dedicated pick lanes to protect throughput. Drinks mixed-case decline suggests renegotiating volume commitments to protect margin. Revenue per order trending up 4.2% — driven by higher-value music merch mix.</p></div>
+      </div>
+    </div>
+
+    <!-- ── Cost Per Order (existing) ── -->
     <div class="row2" style="grid-template-columns:1fr;">
       <div class="card">
         <div class="card-header">
@@ -718,7 +820,77 @@ function initInventory() {
   });
 }
 
+function initRevenueForecast() {
+  var ctx = document.getElementById('revForecastChart');
+  var c2d = ctx.getContext('2d');
+  var grad = c2d.createLinearGradient(0,0,0,270);
+  grad.addColorStop(0,'rgba(59,130,246,0.12)');
+  grad.addColorStop(1,'rgba(59,130,246,0)');
+
+  var months = ['Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
+  var actual = [24.2,26.8,31.5,29.1,32.4,38.4,null,null,null];
+  var forecast = [null,null,null,null,null,38.4,41.2,44.8,52.3];
+  var upper = [null,null,null,null,null,38.4,46.4,51.5,60.1];
+  var lower = [null,null,null,null,null,38.4,35.8,38.1,44.5];
+
+  new Chart(ctx, {
+    type:'line',
+    data:{labels:months,datasets:[
+      { label:'Upper Bound', data:upper, borderColor:'transparent', backgroundColor:'rgba(139,92,246,0.08)',
+        fill:'+1', pointRadius:0, tension:0.4, borderWidth:0, order:3 },
+      { label:'Lower Bound', data:lower, borderColor:'transparent', backgroundColor:'rgba(139,92,246,0.08)',
+        fill:false, pointRadius:0, tension:0.4, borderWidth:0, order:4 },
+      { label:'Actual Revenue', data:actual, borderColor:'#3B82F6', backgroundColor:grad,
+        fill:true, tension:0.4, borderWidth:2.5,
+        pointRadius:5, pointBackgroundColor:'#fff', pointBorderColor:'#3B82F6', pointBorderWidth:2.5,
+        pointHoverRadius:7, pointHoverBackgroundColor:'#3B82F6', order:1 },
+      { label:'AI Forecast', data:forecast, borderColor:'#8B5CF6', backgroundColor:'transparent',
+        fill:false, tension:0.4, borderWidth:2.5, borderDash:[6,4],
+        pointRadius:5, pointBackgroundColor:'#fff', pointBorderColor:'#8B5CF6', pointBorderWidth:2.5,
+        pointHoverRadius:7, pointHoverBackgroundColor:'#8B5CF6', order:2 }
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:function(c){
+          if(c.dataset.label==='Upper Bound'||c.dataset.label==='Lower Bound') return null;
+          return c.dataset.label+': $'+c.raw+'K';
+        }}}
+      },
+      scales:{
+        x:{ticks:{font:{size:12,weight:'500'}},grid:{display:false},border:{display:false}},
+        y:{ticks:{font:{size:11},callback:function(v){return '$'+v+'K';}},
+          grid:{color:'rgba(0,0,0,0.04)',drawBorder:false},border:{display:false},min:15,max:65}
+      }
+    }
+  });
+}
+
+function initRevenueByClient() {
+  var months = ['Jan','Feb','Mar','Apr *','May *','Jun *'];
+  new Chart(document.getElementById('revByClientChart'), {
+    type:'bar',
+    data:{labels:months,datasets:[
+      {label:'Music Merch — Artist X',data:[10.2,12.8,17.5,22.4,24.1,28.6],backgroundColor:'#22C55E',borderRadius:{topLeft:0,topRight:0,bottomLeft:4,bottomRight:4},borderSkipped:false},
+      {label:'Drinks Co — Premium',data:[8.4,8.9,9.2,10.1,10.8,11.2],backgroundColor:'#3B82F6',borderRadius:0,borderSkipped:false},
+      {label:'Music Merch — General',data:[6.1,6.3,6.8,7.0,7.1,7.3],backgroundColor:'#F59E0B',borderRadius:0,borderSkipped:false},
+      {label:'Drinks Co — Mixed',data:[4.4,4.4,4.9,3.7,3.4,3.2],backgroundColor:'#EF4444',borderRadius:{topLeft:4,topRight:4,bottomLeft:0,bottomRight:0},borderSkipped:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:function(c){return c.dataset.label+': $'+c.raw+'K';}}}
+      },
+      scales:{
+        x:{stacked:true,ticks:{font:{size:12,weight:'500'}},grid:{display:false},border:{display:false}},
+        y:{stacked:true,ticks:{font:{size:11},callback:function(v){return '$'+v+'K';}},
+          grid:{color:'rgba(0,0,0,0.04)',drawBorder:false},border:{display:false},min:0}
+      }
+    }
+  });
+}
+
 function initBusiness() {
+  initRevenueForecast();
+  initRevenueByClient();
   new Chart(document.getElementById('costChart'), {
     type: 'bar',
     data: { labels:['Music Merch — Artist X','Drinks Co — Premium','Music Merch — General','Drinks Co — Mixed Cases'],
