@@ -1,0 +1,327 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.fiq-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 0 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.25rem;}
+.fiq-logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:34px;height:34px;border-radius:8px;background:#EF9F27;display:flex;align-items:center;justify-content:center;}
+.logo-icon svg{width:18px;height:18px;}
+.live-badge{font-size:11px;padding:4px 10px;border-radius:20px;background:#E1F5EE;color:#0F6E56;display:flex;align-items:center;gap:6px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#1D9E75;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem;}
+.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.9rem;position:relative;overflow:hidden;}
+.mc-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.05em;}
+.mc-value{font-size:24px;font-weight:500;color:var(--color-text-primary);line-height:1;}
+.mc-change{font-size:11px;margin-top:5px;}
+.up{color:#0F6E56;}.down{color:#993C1D;}.neut{color:var(--color-text-secondary);}
+.mc-bar{position:absolute;bottom:0;left:0;height:3px;width:100%;}
+.tabs{display:flex;gap:0;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);}
+.tb{font-size:13px;padding:0.55rem 1rem;cursor:pointer;background:none;border:none;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-0.5px;font-family:var(--font-sans);white-space:nowrap;}
+.tb:hover{color:var(--color-text-primary);}
+.tb.active{color:#BA7517;border-bottom-color:#EF9F27;font-weight:500;}
+.tc{display:none;}.tc.active{display:block;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.2rem;}
+.ct{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;}
+.cs{font-size:11px;color:var(--color-text-secondary);margin-bottom:0.85rem;}
+.ai-box{background:#FAEEDA;border-left:3px solid #EF9F27;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:0.7rem 0.9rem;margin-top:0.85rem;}
+.ai-label{font-size:10px;color:#854F0B;font-weight:500;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em;}
+.ai-box p{font-size:12px;color:#633806;line-height:1.5;}
+.alert-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.alert-row:last-child{border-bottom:none;}
+.adot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.at{font-size:12px;color:var(--color-text-primary);line-height:1.4;}
+.am{font-size:11px;color:var(--color-text-secondary);margin-top:2px;}
+.zone-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:6px;}
+.zone-cell{aspect-ratio:1;border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ubar{height:8px;border-radius:4px;background:var(--color-background-secondary);margin-top:4px;overflow:hidden;}
+.ufill{height:100%;border-radius:4px;}
+.utable{width:100%;border-collapse:collapse;font-size:12px;}
+.utable th{text-align:left;font-size:11px;color:var(--color-text-secondary);font-weight:400;padding:0 0 7px;border-bottom:0.5px solid var(--color-border-tertiary);}
+.utable td{padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);}
+.utable tr:last-child td{border-bottom:none;}
+.utable th:last-child,.utable td:last-child{text-align:right;}
+.vpill{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500;}
+.vpill.neg{background:#FCEBEB;color:#A32D2D;}
+.vpill.warn{background:#FAEEDA;color:#854F0B;}
+.vpill.ok{background:#EAF3DE;color:#3B6D11;}
+.crow{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px;}
+.crow:last-child{border-bottom:none;}
+.cn{font-weight:500;color:var(--color-text-primary);}
+.cm{font-size:11px;color:var(--color-text-secondary);}
+.pbadge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;}
+.pbadge.hi{background:#EAF3DE;color:#3B6D11;}
+.pbadge.mid{background:#FAEEDA;color:#854F0B;}
+.pbadge.lo{background:#FCEBEB;color:#A32D2D;}
+.stat2{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:center;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;margin-top:8px;}
+.stat2-n{font-size:22px;font-weight:500;color:var(--color-text-primary);}
+.stat2-l{font-size:11px;color:var(--color-text-secondary);}
+@media(max-width:580px){.metrics-grid{grid-template-columns:1fr 1fr;}.row2{grid-template-columns:1fr;}}
+</style>
+
+<div class="fiq-header">
+  <div class="fiq-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><rect x="9" y="12" width="6" height="10" fill="#EF9F27"/></svg>
+    </div>
+    <div>
+      <div style="font-size:16px;font-weight:500;color:var(--color-text-primary);">FulfillmentIQ</div>
+      <div style="font-size:11px;color:var(--color-text-secondary);">Operational intelligence platform</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span style="font-size:12px;color:var(--color-text-secondary);">Demo · Nick Walker · WMS</span>
+    <div class="live-badge"><div class="live-dot"></div>Live demo</div>
+  </div>
+</div>
+
+<div class="metrics-grid">
+  <div class="mc"><div class="mc-label">Orders today</div><div class="mc-value">847</div><div class="mc-change up">▲ 12% vs yesterday</div><div class="mc-bar" style="background:#EF9F27;"></div></div>
+  <div class="mc"><div class="mc-label">Pick accuracy</div><div class="mc-value">97.3%</div><div class="mc-change up">▲ 0.8% this week</div><div class="mc-bar" style="background:#1D9E75;"></div></div>
+  <div class="mc"><div class="mc-label">Inventory accuracy</div><div class="mc-value">94.8%</div><div class="mc-change down">▼ 1.2% vs last month</div><div class="mc-bar" style="background:#378ADD;"></div></div>
+  <div class="mc"><div class="mc-label">Avg cost / order</div><div class="mc-value">$2.14</div><div class="mc-change neut">Stable — last 7 days</div><div class="mc-bar" style="background:#888780;"></div></div>
+</div>
+
+<div class="tabs">
+  <button class="tb active" onclick="switchTab('order',this)">Order intelligence</button>
+  <button class="tb" onclick="switchTab('warehouse',this)">Warehouse ops</button>
+  <button class="tb" onclick="switchTab('inventory',this)">Inventory</button>
+  <button class="tb" onclick="switchTab('business',this)">Business intelligence</button>
+</div>
+
+<div id="tab-order" class="tc active">
+  <div class="row2">
+    <div class="card" style="grid-column:1/-1;">
+      <div class="ct">Weekly order forecast vs actual</div>
+      <div class="cs">AI-predicted volumes vs actual orders — music merch &amp; drinks combined</div>
+      <div style="position:relative;width:100%;height:210px;"><canvas id="fcChart"></canvas></div>
+      <div style="display:flex;gap:16px;margin-top:8px;">
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary);"><span style="width:10px;height:10px;border-radius:2px;background:#378ADD;"></span>Actual</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary);"><span style="width:10px;height:10px;border-radius:2px;background:#FAC77588;border:1px dashed #BA7517;"></span>Forecast</span>
+      </div>
+    </div>
+  </div>
+  <div class="row2">
+    <div class="card">
+      <div class="ct">Campaign spike detection</div>
+      <div class="cs">Upcoming events &amp; predicted volume impact</div>
+      <div class="alert-row"><div class="adot" style="background:#D85A30;"></div><div><div class="at">Music merch launch — Artist X</div><div class="am">Next week · Est. +340% spike · 3,200 orders</div></div></div>
+      <div class="alert-row"><div class="adot" style="background:#EF9F27;"></div><div><div class="at">Drinks client — Summer promo</div><div class="am">In 3 weeks · Est. +85% spike · 1,100 orders</div></div></div>
+      <div class="alert-row"><div class="adot" style="background:#1D9E75;"></div><div><div class="at">Recurring Monday peak pattern</div><div class="am">Weekly · Est. +45% vs midweek baseline</div></div></div>
+      <div class="ai-box"><div class="ai-label">AI recommendation</div><p>Pre-stage Artist X inventory to Zones A1–A3. Schedule +8 temp staff Mon–Wed next week. Alert drinks team to replenish SKU-DR-042 before summer promo.</p></div>
+    </div>
+    <div class="card">
+      <div class="ct">Top SKU demand forecast</div>
+      <div class="cs">Next 14 days — projected pick velocity</div>
+      <div style="position:relative;width:100%;height:210px;"><canvas id="skuChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-warehouse" class="tc">
+  <div class="row2">
+    <div class="card">
+      <div class="ct">Warehouse zone heatmap</div>
+      <div class="cs">Pick efficiency by zone — green = high, red = bottleneck</div>
+      <div class="zone-grid" id="zoneGrid"></div>
+      <div style="display:flex;gap:10px;margin-top:10px;align-items:center;">
+        <span style="font-size:11px;color:var(--color-text-secondary);">Low</span>
+        <div style="flex:1;height:5px;border-radius:3px;background:linear-gradient(to right,#D85A30,#EF9F27,#1D9E75);"></div>
+        <span style="font-size:11px;color:var(--color-text-secondary);">High</span>
+      </div>
+      <div class="ai-box"><div class="ai-label">AI insight</div><p>Zones B3 and D2 are 23% slower than floor average. Re-slotting top 15 velocity SKUs to A-row could recover ~18 orders/hour.</p></div>
+    </div>
+    <div class="card">
+      <div class="ct">Pick rate by hour — today</div>
+      <div class="cs">Units picked per hour across warehouse floor</div>
+      <div style="position:relative;width:100%;height:210px;"><canvas id="pickChart"></canvas></div>
+    </div>
+  </div>
+  <div class="row2">
+    <div class="card">
+      <div class="ct">Operational alerts</div>
+      <div class="alert-row"><div class="adot" style="background:#D85A30;"></div><div><div class="at">Pack station 3 — throughput 34% below target</div><div class="am">Active since 09:15 · Affecting orders #4421–#4489</div></div></div>
+      <div class="alert-row"><div class="adot" style="background:#EF9F27;"></div><div><div class="at">Receiving dock — 12 pallets pending clearance</div><div class="am">ETA 2.5 hrs at current rate</div></div></div>
+      <div class="alert-row"><div class="adot" style="background:#EF9F27;"></div><div><div class="at">Zone C — staff 42% idle, recommend redeployment</div><div class="am">Move 3 pickers to Zone B or pack stations</div></div></div>
+      <div class="alert-row"><div class="adot" style="background:#1D9E75;"></div><div><div class="at">Outbound on track for 4PM cutoff</div><div class="am">318 orders remaining · 97 min capacity buffer</div></div></div>
+    </div>
+    <div class="card">
+      <div class="ct">Staff utilization by team</div>
+      <div style="margin-top:8px;">
+        <div style="margin-bottom:11px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;"><span>Picking team (AM)</span><span style="color:var(--color-text-primary);font-weight:500;">88%</span></div><div class="ubar"><div class="ufill" style="width:88%;background:#1D9E75;"></div></div></div>
+        <div style="margin-bottom:11px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;"><span>Packing team (AM)</span><span style="color:var(--color-text-primary);font-weight:500;">71%</span></div><div class="ubar"><div class="ufill" style="width:71%;background:#EF9F27;"></div></div></div>
+        <div style="margin-bottom:11px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;"><span>Receiving team</span><span style="color:var(--color-text-primary);font-weight:500;">93%</span></div><div class="ubar"><div class="ufill" style="width:93%;background:#1D9E75;"></div></div></div>
+        <div style="margin-bottom:11px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;"><span>Quality control</span><span style="color:var(--color-text-primary);font-weight:500;">55%</span></div><div class="ubar"><div class="ufill" style="width:55%;background:#EF9F27;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;"><span>Dispatch team</span><span style="color:var(--color-text-primary);font-weight:500;">62%</span></div><div class="ubar"><div class="ufill" style="width:62%;background:#EF9F27;"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-inventory" class="tc">
+  <div class="row2">
+    <div class="card">
+      <div class="ct">Inventory accuracy breakdown</div>
+      <div class="cs">System count vs physical count — discrepancy analysis</div>
+      <div style="position:relative;width:100%;height:190px;"><canvas id="invDonut"></canvas></div>
+      <div style="display:flex;justify-content:center;gap:14px;margin-top:8px;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary);"><span style="width:10px;height:10px;border-radius:50%;background:#1D9E75;"></span>Accurate 94.8%</span>
+        <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary);"><span style="width:10px;height:10px;border-radius:50%;background:#EF9F27;"></span>Minor variance 3.6%</span>
+        <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary);"><span style="width:10px;height:10px;border-radius:50%;background:#D85A30;"></span>Critical 1.6%</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">Anomaly detection</div>
+      <div class="cs">AI-flagged stock inconsistencies requiring action</div>
+      <div class="alert-row"><div class="adot" style="background:#D85A30;"></div><div><div class="at">SKU-MM-291 — count deficit of 47 units</div><div class="am">Music merch · Last physical count 3 days ago</div></div></div>
+      <div class="alert-row"><div class="adot" style="background:#D85A30;"></div><div><div class="at">SKU-DR-042 — system shows 0, physical 118</div><div class="am">Drinks client · Possible receiving scan error</div></div></div>
+      <div class="alert-row"><div class="adot" style="background:#EF9F27;"></div><div><div class="at">Zone D2 — 12 SKUs with unexplained shrinkage</div><div class="am">Avg 3.2% loss vs 1.5% threshold</div></div></div>
+      <div class="alert-row"><div class="adot" style="background:#1D9E75;"></div><div><div class="at">SKU-MM-105 — 340 surplus units detected</div><div class="am">Recommend overflow zone or client return</div></div></div>
+      <div class="ai-box"><div class="ai-label">AI recommendation</div><p>Schedule spot-check for Zone D2 and SKU-DR-042 before Artist X launch. 47-unit shortfall could cause 14 unfulfillable orders next week.</p></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:1rem;">
+    <div class="ct">SKU variance report — top discrepancies</div>
+    <div style="margin-top:8px;overflow-x:auto;">
+      <table class="utable">
+        <thead><tr><th>SKU</th><th>Description</th><th>Client</th><th>System qty</th><th>Physical</th><th>Variance</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;">MM-291</td><td>Artist X Tee — Black L</td><td>Music Merch</td><td>203</td><td>156</td><td><span class="vpill neg">-47 units</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;">DR-042</td><td>Craft Lager 330ml 12pk</td><td>Drinks Co</td><td>0</td><td>118</td><td><span class="vpill warn">+118 scan miss</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;">MM-105</td><td>Vinyl LP — Limited Ed.</td><td>Music Merch</td><td>540</td><td>340</td><td><span class="vpill warn">+200 overstock</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;">DR-017</td><td>Sparkling Water 500ml</td><td>Drinks Co</td><td>1,200</td><td>1,187</td><td><span class="vpill ok">-13 units</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;">MM-388</td><td>Hoodie — Grey XL</td><td>Music Merch</td><td>89</td><td>82</td><td><span class="vpill warn">-7 units</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="tab-business" class="tc">
+  <div class="row2">
+    <div class="card" style="grid-column:1/-1;">
+      <div class="ct">Cost per order by client</div>
+      <div class="cs">Average fulfillment cost — last 30 days. Lower = more profitable to fulfil.</div>
+      <div style="position:relative;width:100%;height:200px;"><canvas id="costChart"></canvas></div>
+    </div>
+  </div>
+  <div class="row2">
+    <div class="card">
+      <div class="ct">Client profitability overview</div>
+      <div style="margin-top:6px;">
+        <div class="crow"><div><div class="cn">Music Merch — Artist X</div><div class="cm">$1.82/order · 2,847 orders this month</div></div><span class="pbadge hi">High margin</span></div>
+        <div class="crow"><div><div class="cn">Drinks Co — Premium</div><div class="cm">$2.31/order · 1,203 orders this month</div></div><span class="pbadge mid">Mid margin</span></div>
+        <div class="crow"><div><div class="cn">Music Merch — General</div><div class="cm">$2.89/order · 892 orders this month</div></div><span class="pbadge mid">Mid margin</span></div>
+        <div class="crow"><div><div class="cn">Drinks Co — Mixed Cases</div><div class="cm">$4.12/order · 341 orders this month</div></div><span class="pbadge lo">Low margin</span></div>
+      </div>
+      <div class="ai-box"><div class="ai-label">AI insight</div><p>Mixed case drinks orders cost 2.3x more to fulfil. Consider adding a pick-complexity surcharge or renegotiating SLA terms for this line.</p></div>
+    </div>
+    <div class="card">
+      <div class="ct">Warehouse utilization</div>
+      <div class="cs">Capacity &amp; throughput metrics — current week</div>
+      <div style="margin-top:4px;">
+        <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;"><span>Floor space utilization</span><span style="color:var(--color-text-primary);font-weight:500;">76%</span></div><div class="ubar" style="height:10px;"><div class="ufill" style="width:76%;background:#1D9E75;"></div></div></div>
+        <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;"><span>Throughput capacity</span><span style="color:var(--color-text-primary);font-weight:500;">68%</span></div><div class="ubar" style="height:10px;"><div class="ufill" style="width:68%;background:#EF9F27;"></div></div></div>
+        <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;"><span>Staff vs optimal headcount</span><span style="color:var(--color-text-primary);font-weight:500;">81%</span></div><div class="ubar" style="height:10px;"><div class="ufill" style="width:81%;background:#1D9E75;"></div></div></div>
+        <div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;"><span>Dock door utilization</span><span style="color:var(--color-text-primary);font-weight:500;">44%</span></div><div class="ubar" style="height:10px;"><div class="ufill" style="width:44%;background:#D85A30;"></div></div></div>
+        <div class="stat2">
+          <div><div class="stat2-n">$0.31</div><div class="stat2-l">Cost per sq ft / month</div></div>
+          <div><div class="stat2-n">1,240</div><div class="stat2-l">Max daily order capacity</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+var _done={};
+function switchTab(tab,btn){
+  document.querySelectorAll('.tc').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.tb').forEach(function(el){el.classList.remove('active');});
+  document.getElementById('tab-'+tab).classList.add('active');
+  btn.classList.add('active');
+  if(!_done[tab]) initTab(tab);
+}
+function initTab(tab){
+  _done[tab]=true;
+  if(tab==='order') initOrder();
+  if(tab==='warehouse') initWarehouse();
+  if(tab==='inventory') initInventory();
+  if(tab==='business') initBusiness();
+}
+function initOrder(){
+  var weeks=['W-8','W-7','W-6','W-5','W-4','W-3','W-2','Last wk','This wk','Next wk'];
+  var actual=[520,490,610,580,720,680,790,847,null,null];
+  var forecast=[null,null,null,null,null,null,null,820,870,3200];
+  new Chart(document.getElementById('fcChart'),{
+    type:'bar',
+    data:{labels:weeks,datasets:[
+      {label:'Actual',data:actual,backgroundColor:'#378ADD',borderRadius:4},
+      {label:'Forecast',data:forecast,backgroundColor:'#FAC77560',borderColor:'#BA7517',borderWidth:1,borderRadius:4}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{size:10},color:'#888780'},grid:{display:false}},
+              y:{ticks:{font:{size:10},color:'#888780'},grid:{color:'#88878020'}}}}
+  });
+  new Chart(document.getElementById('skuChart'),{
+    type:'bar',indexAxis:'y',
+    data:{labels:['Artist X Tee L','Craft Lager 12pk','Vinyl LP Ltd','Hoodie Grey XL','Sparkling Water'],
+          datasets:[{data:[3200,1100,840,620,580],backgroundColor:['#D85A30','#EF9F27','#378ADD','#888780','#1D9E75'],borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{size:10},color:'#888780'},grid:{color:'#88878020'}},
+              y:{ticks:{font:{size:10},color:'#888780'},grid:{display:false}}}}
+  });
+}
+function initWarehouse(){
+  var zones=[
+    {n:'A1',v:94},{n:'A2',v:91},{n:'A3',v:87},{n:'A4',v:95},{n:'A5',v:89},
+    {n:'B1',v:82},{n:'B2',v:78},{n:'B3',v:61},{n:'B4',v:83},{n:'B5',v:80},
+    {n:'C1',v:88},{n:'C2',v:90},{n:'C3',v:85},{n:'C4',v:79},{n:'C5',v:92},
+    {n:'D1',v:74},{n:'D2',v:58},{n:'D3',v:81},{n:'D4',v:86},{n:'D5',v:77},
+    {n:'E1',v:69},{n:'E2',v:72},{n:'E3',v:84},{n:'E4',v:91},{n:'E5',v:88}
+  ];
+  var g=document.getElementById('zoneGrid');
+  g.innerHTML='';
+  zones.forEach(function(z){
+    var c=z.v>80?'#1D9E75':z.v>70?'#EF9F27':'#D85A30';
+    var t=z.v>80?'#085041':z.v>70?'#633806':'#71281B';
+    var el=document.createElement('div');
+    el.className='zone-cell';
+    el.style.cssText='background:'+c+'22;border:1px solid '+c+'55;';
+    el.innerHTML='<span style="font-size:11px;color:'+t+';font-weight:500;">'+z.v+'%</span><span style="font-size:9px;color:'+t+';opacity:0.7;">'+z.n+'</span>';
+    g.appendChild(el);
+  });
+  new Chart(document.getElementById('pickChart'),{
+    type:'line',
+    data:{labels:['06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'],
+          datasets:[{label:'Units/hr',data:[120,185,210,198,220,195,140,170,205,218,190],
+            borderColor:'#EF9F27',backgroundColor:'#EF9F2718',fill:true,tension:0.4,
+            pointRadius:3,pointBackgroundColor:'#EF9F27',borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{font:{size:10},color:'#888780'},grid:{display:false}},
+              y:{ticks:{font:{size:10},color:'#888780'},grid:{color:'#88878020'},min:0}}}
+  });
+}
+function initInventory(){
+  new Chart(document.getElementById('invDonut'),{
+    type:'doughnut',
+    data:{datasets:[{data:[94.8,3.6,1.6],backgroundColor:['#1D9E75','#EF9F27','#D85A30'],borderWidth:0,hoverOffset:4}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'72%',plugins:{legend:{display:false}}}
+  });
+}
+function initBusiness(){
+  new Chart(document.getElementById('costChart'),{
+    type:'bar',
+    data:{labels:['Music Merch — Artist X','Drinks Co — Premium','Music Merch — General','Drinks Co — Mixed Cases'],
+          datasets:[{data:[1.82,2.31,2.89,4.12],backgroundColor:['#1D9E75','#378ADD','#EF9F27','#D85A30'],borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:function(v){return '$'+v.raw.toFixed(2)+' per order';}}}},
+      scales:{x:{ticks:{font:{size:11},color:'#888780'},grid:{display:false}},
+              y:{ticks:{font:{size:11},color:'#888780',callback:function(v){return '$'+v.toFixed(2);}},
+                 grid:{color:'#88878020'},min:0,max:5}}}
+  });
+}
+_done['order']=true;
+initOrder();
+</script>
